@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Imepac" parent="android:Theme.Material.Light.NoActionBar" />
-    <style name="AppTheme" parent="Theme.AppCompat.Light"/>
+    <!-- Tema principal da aplicação -->
+    <style name="Theme.Imepac" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/azul_imepac</item>
+        <item name="colorPrimaryVariant">@color/azul_imepac2</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/azul_imepac</item>
+        <item name="colorPrimaryDark">@color/azul_imepac2</item>
+        <item name="colorAccent">@color/azul_imepac3</item>
+    </style>
 </resources>
