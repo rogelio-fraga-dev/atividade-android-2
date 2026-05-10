@@ -60,7 +60,7 @@ class FormLogin : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     progressbar.visibility = View.GONE
-                    navegarParaTelaPrincipal()
+                    navegarParaTelaPerfil()
                 } else {
                     progressbar.visibility = View.GONE
                     val mensagemErro = task.exception?.message ?: "Erro desconhecido"
@@ -73,9 +73,8 @@ class FormLogin : AppCompatActivity() {
             }
     }
 
-    private fun navegarParaTelaPrincipal() {
-        // Refatoração de contexto também aplicada na navegação principal
-        val intent = Intent(this@FormLogin, MainActivity::class.java)
+    private fun navegarParaTelaPerfil() {
+        val intent = Intent(this@FormLogin, TelaPerfil::class.java)
         startActivity(intent)
         finish()
     }
