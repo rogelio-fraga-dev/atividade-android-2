@@ -66,6 +66,13 @@ class EditarManutencao : AppCompatActivity() {
                 } else {
                     toggleStatus.check(R.id.btn_status_agendada)
                 }
+
+                // Preencher checklist
+                findViewById<android.widget.CheckBox>(R.id.check_limpeza).isChecked = m.checklist.contains("Limpeza Geral")
+                findViewById<android.widget.CheckBox>(R.id.check_voltagem).isChecked = m.checklist.contains("Teste de Voltagem")
+                findViewById<android.widget.CheckBox>(R.id.check_pasta).isChecked = m.checklist.contains("Troca de Pasta Térmica")
+                findViewById<android.widget.CheckBox>(R.id.check_firmware).isChecked = m.checklist.contains("Atualização de Firmware")
+                findViewById<android.widget.CheckBox>(R.id.check_estresse).isChecked = m.checklist.contains("Teste de Estresse")
             }
     }
 
@@ -83,6 +90,13 @@ class EditarManutencao : AppCompatActivity() {
         val desc = editDescricao.text.toString()
         val status = if (toggleStatus.checkedButtonId == R.id.btn_status_realizada) "Realizada" else "Agendada"
 
+        val checklist = mutableListOf<String>()
+        if (findViewById<android.widget.CheckBox>(R.id.check_limpeza).isChecked) checklist.add("Limpeza Geral")
+        if (findViewById<android.widget.CheckBox>(R.id.check_voltagem).isChecked) checklist.add("Teste de Voltagem")
+        if (findViewById<android.widget.CheckBox>(R.id.check_pasta).isChecked) checklist.add("Troca de Pasta Térmica")
+        if (findViewById<android.widget.CheckBox>(R.id.check_firmware).isChecked) checklist.add("Atualização de Firmware")
+        if (findViewById<android.widget.CheckBox>(R.id.check_estresse).isChecked) checklist.add("Teste de Estresse")
+
         if (data.isEmpty() || desc.isEmpty()) {
             Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             return
@@ -92,7 +106,8 @@ class EditarManutencao : AppCompatActivity() {
             "data" to data,
             "custo" to custo,
             "descricao" to desc,
-            "statusManutencao" to status
+            "statusManutencao" to status,
+            "checklist" to checklist
         )
 
         db.collection("Manutencoes").document(id).update(updates)

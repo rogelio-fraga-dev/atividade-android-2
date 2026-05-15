@@ -59,4 +59,7 @@ dependencies {
 
     // Dependência do Firestore (Banco de dados NoSQL)
     implementation("com.google.firebase:firebase-firestore-ktx")
+
+    // Gráficos Pro
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

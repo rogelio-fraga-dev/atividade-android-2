@@ -24,6 +24,10 @@ class ListaManutencoes : AppCompatActivity() {
     private var PAGE_SIZE = 5L
     private var isLoading = false
     private var hasMore = true
+    
+    private var pageStack = mutableListOf<DocumentSnapshot?>()
+    private var currentPage = 1
+    private var currentFirstDoc: DocumentSnapshot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +53,20 @@ class ListaManutencoes : AppCompatActivity() {
         rv.adapter = adapter
 
         // Scroll paginação
-        findViewById<View>(R.id.btn_ver_mais_manut).setOnClickListener {
-            carregarManutencoes(paginar = true)
+        findViewById<View>(R.id.btn_proxima_manut).setOnClickListener {
+            if (hasMore) {
+                pageStack.add(currentFirstDoc)
+                currentPage++
+                carregarManutencoes(paginar = true, forward = true)
+            }
+        }
+
+        findViewById<View>(R.id.btn_anterior_manut).setOnClickListener {
+            if (currentPage > 1) {
+                currentPage--
+                val prev = if (pageStack.isNotEmpty()) pageStack.removeAt(pageStack.size - 1) else null
+                carregarManutencoes(paginar = true, forward = false, startAtDoc = prev)
+            }
         }
 
         findViewById<View>(R.id.ic_voltar).setOnClickListener { finish() }
@@ -92,8 +108,8 @@ class ListaManutencoes : AppCompatActivity() {
         carregarManutencoes(paginar = false)
     }
 
-    private fun carregarManutencoes(paginar: Boolean) {
-        if (isLoading || !hasMore) return
+    private fun carregarManutencoes(paginar: Boolean, forward: Boolean = true, startAtDoc: DocumentSnapshot? = null) {
+        if (isLoading) return
         isLoading = true
         val progress = findViewById<View>(R.id.progress_manut)
         progress.visibility = View.VISIBLE
@@ -103,15 +119,21 @@ class ListaManutencoes : AppCompatActivity() {
         var query: Query = db.collection("Manutencoes")
             .whereEqualTo("uid", uid)
 
-        // Filtrar por equipamento se veio de DetalhesEquipamento
         if (equipamentoId != null) {
             query = query.whereEqualTo("equipamentoId", equipamentoId)
         }
 
         query = query.orderBy("createdAt", Query.Direction.DESCENDING)
-            .limit(PAGE_SIZE)
 
-        if (paginar && lastVisible != null) query = query.startAfter(lastVisible!!)
+        if (paginar) {
+            if (forward && lastVisible != null) {
+                query = query.startAfter(lastVisible!!)
+            } else if (!forward && startAtDoc != null) {
+                query = query.startAt(startAtDoc)
+            }
+        }
+
+        query = query.limit(PAGE_SIZE)
 
         query.get().addOnSuccessListener { snap ->
             isLoading = false
@@ -119,26 +141,52 @@ class ListaManutencoes : AppCompatActivity() {
             
             if (snap.isEmpty) { 
                 hasMore = false
-                if (!paginar && lista.isEmpty()) {
-                    findViewById<View>(R.id.layout_vazio_manut).visibility = View.VISIBLE
-                }
+                if (currentPage == 1) findViewById<View>(R.id.layout_vazio_manut).visibility = View.VISIBLE
+                updateUI()
                 return@addOnSuccessListener 
             }
             
+            // Guardar o primeiro snapshot para o stack se estivermos indo pra frente
+            if (forward && paginar) {
+                // O snap que acabou de chegar é a nova página. 
+                // Mas a lógica do stack é guardar o anterior?
+                // Vamos simplificar: pageStack guarda o 'firstVisible' de cada página.
+            }
+            // Na verdade, a lógica correta:
+            // Se estou carregando a página N, e vou pra N+1: guardo o firstVisible da página N.
+            
             findViewById<View>(R.id.layout_vazio_manut).visibility = View.GONE
+            currentFirstDoc = snap.documents.first()
             lastVisible = snap.documents.last()
+            
+            // Para o Anterior funcionar, precisamos guardar o PRIMEIRO snapshot da página que estamos saindo
+            // Na verdade, o 'startAtDoc' passado no Anterior é o que salvamos quando estávamos naquela página.
+            
             hasMore = snap.size() >= PAGE_SIZE.toInt()
             val novos = snap.documents.mapNotNull { d -> d.toObject(Manutencao::class.java)?.copy(id = d.id) }
-            if (!paginar) lista.clear()
+            
+            // Se estamos indo pra frente, salvamos o primeiro doc da página ATUAL antes de limpá-la
+            if (forward && lista.isNotEmpty()) {
+                // Não, isso daria erro se fôssemos e voltássemos várias vezes.
+                // A lógica do Equipamentos (pageStack.add(listaCompleta.firstOrNull())) no clique é melhor.
+            }
+
+            lista.clear()
             lista.addAll(novos)
             adapter.notifyDataSetChanged()
-            findViewById<View>(R.id.btn_ver_mais_manut).visibility = if (hasMore) View.VISIBLE else View.GONE
+            updateUI()
 
         }.addOnFailureListener { 
             isLoading = false
             findViewById<View>(R.id.progress_manut).visibility = View.GONE
             carregarSemOrdenacao()
         }
+    }
+
+    private fun updateUI() {
+        findViewById<TextView>(R.id.txt_pagina_manut).text = "Página $currentPage"
+        findViewById<View>(R.id.btn_anterior_manut).isEnabled = currentPage > 1
+        findViewById<View>(R.id.btn_proxima_manut).isEnabled = hasMore
     }
 
     private fun carregarSemOrdenacao() {

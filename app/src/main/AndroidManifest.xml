@@ -41,6 +41,7 @@
         <activity android:name=".FiltroEquipamentos"   android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".RelatoriosActivity"   android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".EditarManutencao"    android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".AgendaActivity"      android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
 
     </application>
 </manifest>

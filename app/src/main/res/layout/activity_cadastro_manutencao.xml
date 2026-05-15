@@ -173,12 +173,11 @@
                     android:hint="0,00"
                     android:inputType="numberDecimal" />
 
-                <!-- Descrição -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Descrição do que foi/será feito"
+                    android:text="Descrição do serviço"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -191,10 +190,34 @@
                     android:layout_marginHorizontal="0dp"
                     android:layout_marginTop="8dp"
                     android:gravity="top"
-                    android:hint="Ex: Reparo na placa lógica, troca de capacitor, atualização de firmware..."
+                    android:hint="Ex: Troca de capacitores..."
                     android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:padding="16dp" />
+                    android:minLines="2"
+                    android:padding="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Checklist de Procedimentos"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/layout_checklist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp">
+
+                    <CheckBox android:id="@+id/check_limpeza" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Limpeza Geral" />
+                    <CheckBox android:id="@+id/check_voltagem" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Teste de Voltagem" />
+                    <CheckBox android:id="@+id/check_pasta" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Troca de Pasta Térmica" />
+                    <CheckBox android:id="@+id/check_firmware" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atualização de Firmware" />
+                    <CheckBox android:id="@+id/check_estresse" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Teste de Estresse" />
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_salvar_manutencao"

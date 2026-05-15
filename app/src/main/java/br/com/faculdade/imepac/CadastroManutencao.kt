@@ -104,16 +104,24 @@ class CadastroManutencao : AppCompatActivity() {
 
         val custo = custoStr.replace(",", ".").toDoubleOrNull() ?: 0.0
 
+        val checklist = mutableListOf<String>()
+        if (findViewById<CheckBox>(R.id.check_limpeza).isChecked) checklist.add("Limpeza Geral")
+        if (findViewById<CheckBox>(R.id.check_voltagem).isChecked) checklist.add("Teste de Voltagem")
+        if (findViewById<CheckBox>(R.id.check_pasta).isChecked) checklist.add("Troca de Pasta Térmica")
+        if (findViewById<CheckBox>(R.id.check_firmware).isChecked) checklist.add("Atualização de Firmware")
+        if (findViewById<CheckBox>(R.id.check_estresse).isChecked) checklist.add("Teste de Estresse")
+
         val manutencao = hashMapOf(
             "uid" to uid,
             "equipamentoId" to equipId,
             "equipamentoNome" to equipNome,
-            "tipo" to "Manutenção", // Simplificado para o Toggle
+            "tipo" to "Manutenção", 
             "descricao" to descricao,
             "data" to data,
             "custo" to custo,
             "responsavel" to responsavel,
             "statusManutencao" to statusManut,
+            "checklist" to checklist,
             "createdAt" to com.google.firebase.Timestamp.now()
         )
 

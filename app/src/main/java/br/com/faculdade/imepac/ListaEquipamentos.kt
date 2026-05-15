@@ -28,6 +28,11 @@ class ListaEquipamentos : AppCompatActivity() {
     private var isLoading = false
     private var hasMore = true
     private var filtroStatus: String? = null
+    
+    // Stack de documentos para "Anterior"
+    private var pageStack = mutableListOf<DocumentSnapshot?>()
+    private var currentPage = 1
+    private var currentFirstDoc: DocumentSnapshot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +53,20 @@ class ListaEquipamentos : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        findViewById<View>(R.id.btn_ver_mais).setOnClickListener {
-            carregarEquipamentos(paginar = true)
+        findViewById<View>(R.id.btn_proxima).setOnClickListener {
+            if (hasMore) {
+                pageStack.add(currentFirstDoc)
+                currentPage++
+                carregarEquipamentos(paginar = true, forward = true)
+            }
+        }
+
+        findViewById<View>(R.id.btn_anterior).setOnClickListener {
+            if (currentPage > 1) {
+                currentPage--
+                val previousFirst = if (pageStack.isNotEmpty()) pageStack.removeAt(pageStack.size - 1) else null
+                carregarEquipamentos(paginar = true, forward = false, startAtDoc = previousFirst)
+            }
         }
 
         findViewById<View>(R.id.fab_novo_equipamento).setOnClickListener {
@@ -93,8 +110,8 @@ class ListaEquipamentos : AppCompatActivity() {
         carregarEquipamentos(paginar = false)
     }
 
-    private fun carregarEquipamentos(paginar: Boolean) {
-        if (isLoading || !hasMore) return
+    private fun carregarEquipamentos(paginar: Boolean, forward: Boolean = true, startAtDoc: DocumentSnapshot? = null) {
+        if (isLoading) return
         isLoading = true
         val progress = findViewById<View>(R.id.progress_equip)
         progress.visibility = View.VISIBLE
@@ -104,27 +121,34 @@ class ListaEquipamentos : AppCompatActivity() {
         var query = db.collection("Equipamentos")
             .whereEqualTo("uid", uid)
 
-        // Aplicar filtro de status se vier do Dashboard
         filtroStatus?.let {
             query = query.whereEqualTo("status", it)
         }
 
         query = query.orderBy("createdAt", Query.Direction.DESCENDING) 
-            .limit(PAGE_SIZE)
 
-        if (paginar && lastVisible != null) {
-            query = query.startAfter(lastVisible!!)
+        if (paginar) {
+            if (forward && lastVisible != null) {
+                query = query.startAfter(lastVisible!!)
+            } else if (!forward) {
+                // Ao voltar, usamos o documento que era o primeiro daquela página
+                if (startAtDoc != null) query = query.startAt(startAtDoc)
+            }
         }
+        
+        query = query.limit(PAGE_SIZE)
 
         query.get().addOnSuccessListener { snapshots ->
             isLoading = false
             if (snapshots.isEmpty) {
                 hasMore = false
-                if (!paginar && listaCompleta.isEmpty()) layoutVazio.visibility = View.VISIBLE
+                if (currentPage == 1) layoutVazio.visibility = View.VISIBLE
+                updateUI()
                 return@addOnSuccessListener
             }
 
             layoutVazio.visibility = View.GONE
+            currentFirstDoc = snapshots.documents.first()
             lastVisible = snapshots.documents.last()
             hasMore = snapshots.size() >= PAGE_SIZE.toInt()
 
@@ -134,11 +158,11 @@ class ListaEquipamentos : AppCompatActivity() {
                 } catch (e: Exception) { null }
             }
             
-            if (!paginar) listaCompleta.clear()
+            listaCompleta.clear()
             listaCompleta.addAll(novos)
             adapter.notifyDataSetChanged()
             progress.visibility = View.GONE
-            findViewById<View>(R.id.btn_ver_mais).visibility = if (hasMore) View.VISIBLE else View.GONE
+            updateUI()
         }.addOnFailureListener { e ->
             isLoading = false
             progress.visibility = View.GONE
@@ -146,6 +170,12 @@ class ListaEquipamentos : AppCompatActivity() {
                 carregarSemOrdenacao()
             }
         }
+    }
+
+    private fun updateUI() {
+        findViewById<TextView>(R.id.txt_pagina_atual).text = "Página $currentPage"
+        findViewById<View>(R.id.btn_anterior).isEnabled = currentPage > 1
+        findViewById<View>(R.id.btn_proxima).isEnabled = hasMore
     }
 
     private fun carregarSemOrdenacao() {

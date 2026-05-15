@@ -1,9 +1,15 @@
 package br.com.faculdade.imepac
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.github.PhilJay.charting.charts.BarChart
+import com.github.PhilJay.charting.charts.PieChart
+import com.github.PhilJay.charting.data.*
+import com.github.PhilJay.charting.formatter.IndexAxisValueFormatter
+import com.github.PhilJay.charting.utils.ColorTemplate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
@@ -13,6 +19,8 @@ class RelatoriosActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
+    private lateinit var pieChart: PieChart
+    private lateinit var barChart: BarChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,49 +28,16 @@ class RelatoriosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_relatorios)
         db = FirebaseFirestore.getInstance()
 
+        pieChart = findViewById(R.id.pie_chart_status)
+        barChart = findViewById(R.id.bar_chart_custos)
+
         findViewById<View>(R.id.ic_voltar).setOnClickListener { finish() }
-        
-        findViewById<View>(R.id.btn_seed_data).setOnClickListener {
-            br.com.faculdade.imepac.utils.SeedData.seedDatabase { success ->
-                if (success) {
-                    android.widget.Toast.makeText(this, "Banco populado com sucesso!", android.widget.Toast.LENGTH_SHORT).show()
-                    recreate() // Recarregar dados
-                } else {
-                    android.widget.Toast.makeText(this, "Erro ao gerar dados.", android.widget.Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
 
         if (uid != null) {
             carregarDadosFinanceiros()
-            carregarDistribuicaoTipos()
-            carregarStatusFrota()
+            carregarGraficoStatus()
+            carregarGraficoCustos()
         }
-    }
-
-    private fun carregarStatusFrota() {
-        val container = findViewById<android.widget.LinearLayout>(R.id.container_stats_list)
-        container.removeAllViews()
-
-        db.collection("Equipamentos")
-            .whereEqualTo("uid", uid)
-            .get()
-            .addOnSuccessListener { snap ->
-                val counts = mutableMapOf<String, Int>()
-                for (doc in snap) {
-                    val status = doc.getString("status") ?: "Outros"
-                    counts[status] = counts.getOrDefault(status, 0) + 1
-                }
-
-                counts.forEach { (status, count) ->
-                    val textView = TextView(this)
-                    textView.text = "$status: $count"
-                    textView.setPadding(0, 8, 0, 8)
-                    textView.setTextColor(resources.getColor(R.color.text_primary, null))
-                    textView.textSize = 16f
-                    container.addView(textView)
-                }
-            }
     }
 
     private fun carregarDadosFinanceiros() {
@@ -79,21 +54,69 @@ class RelatoriosActivity : AppCompatActivity() {
             }
     }
 
-    private fun carregarDistribuicaoTipos() {
+    private fun carregarGraficoStatus() {
+        db.collection("Equipamentos")
+            .whereEqualTo("uid", uid)
+            .get()
+            .addOnSuccessListener { snap ->
+                val counts = mutableMapOf<String, Int>()
+                for (doc in snap) {
+                    val status = doc.getString("status") ?: "Outros"
+                    counts[status] = counts.getOrDefault(status, 0) + 1
+                }
+
+                val entries = mutableListOf<PieEntry>()
+                counts.forEach { (status, count) ->
+                    entries.add(PieEntry(count.toFloat(), status))
+                }
+
+                val dataSet = PieDataSet(entries, "Status dos Ativos")
+                dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+                dataSet.valueTextColor = Color.BLACK
+                dataSet.valueTextSize = 14f
+
+                val data = PieData(dataSet)
+                pieChart.data = data
+                pieChart.description.isEnabled = false
+                pieChart.centerText = "Ativos"
+                pieChart.animateY(1000)
+                pieChart.invalidate()
+            }
+    }
+
+    private fun carregarGraficoCustos() {
         db.collection("Manutencoes")
             .whereEqualTo("uid", uid)
             .get()
             .addOnSuccessListener { snap ->
-                var preventiva = 0
-                var corretiva = 0
+                val custosPorTipo = mutableMapOf<String, Double>()
                 for (doc in snap) {
-                    when (doc.getString("tipo")) {
-                        "Preventiva" -> preventiva++
-                        "Corretiva" -> corretiva++
-                    }
+                    val tipo = doc.getString("tipo") ?: "Outros"
+                    val custo = doc.getDouble("custo") ?: 0.0
+                    custosPorTipo[tipo] = custosPorTipo.getOrDefault(tipo, 0.0) + custo
                 }
-                findViewById<TextView>(R.id.txt_count_preventiva).text = preventiva.toString()
-                findViewById<TextView>(R.id.txt_count_corretiva).text = corretiva.toString()
+
+                val entries = mutableListOf<BarEntry>()
+                val labels = mutableListOf<String>()
+                var i = 0f
+                custosPorTipo.forEach { (tipo, custo) ->
+                    entries.add(BarEntry(i, custo.toFloat()))
+                    labels.add(tipo)
+                    i++
+                }
+
+                val dataSet = BarDataSet(entries, "Custos (R$)")
+                dataSet.colors = ColorTemplate.LIBERTY_COLORS.toList()
+                dataSet.valueTextSize = 12f
+
+                val data = BarData(dataSet)
+                barChart.data = data
+                barChart.description.isEnabled = false
+                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+                barChart.xAxis.granularity = 1f
+                barChart.xAxis.isGranularityEnabled = true
+                barChart.animateY(1000)
+                barChart.invalidate()
             }
     }
 }

@@ -65,18 +65,46 @@
         app:layout_constraintBottom_toTopOf="@id/btn_ver_mais"
         app:layout_constraintTop_toBottomOf="@id/edit_busca" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_ver_mais"
-        style="@style/ButtonOutline"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
-        android:paddingHorizontal="24dp"
-        android:text="Ver Mais"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:id="@+id/layout_paginacao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="8dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_anterior"
+            style="@style/ButtonOutline"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Anterior"
+            android:textSize="12sp"
+            android:paddingHorizontal="12dp"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txt_pagina_atual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="Página 1"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_proxima"
+            style="@style/ButtonOutline"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Próxima"
+            android:textSize="12sp"
+            android:paddingHorizontal="12dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_vazio"

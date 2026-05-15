@@ -1,41 +1,53 @@
 # ManutenControl - Sistema de Gestão de Manutenção
 
-Este é um sistema desenvolvido para o controle de inventário e gestão de manutenção de equipamentos eletrônicos. O foco do projeto é oferecer uma interface profissional e funcional para laboratórios e departamentos que precisam gerenciar o estado de seus ativos em tempo real.
+Este é um sistema robusto desenvolvido para o controle de inventário e gestão de manutenção de equipamentos eletrônicos. O foco do projeto é oferecer uma interface premium, funcional e escalável para laboratórios e departamentos que precisam gerenciar o ciclo de vida completo de seus ativos.
 
-## Funcionalidades principais
+## Fluxo do Sistema
 
-### Dashboard e Controle
-O sistema conta com um painel de controle que exibe a contagem total de equipamentos por estado operacional: Funcionando, Em Manutenção, Atenção e Parado. Os cards são interativos e permitem filtrar a lista de equipamentos diretamente pelo status selecionado.
+1.  **Acesso Seguro**: O usuário realiza login ou cadastro (com metadados de perfil) via Firebase Auth.
+2.  **Painel de Controle (Dashboard)**: Uma visão geral da saúde da frota com KPIs em tempo real.
+3.  **Gestão de Ativos**: Cadastro e monitoramento de equipamentos.
+4.  **Planejamento (Agenda)**: Visualização de manutenções futuras programadas.
+5.  **Execução (Checklist)**: Registro de serviços com verificação de etapas técnicas.
+6.  **Análise (Analytics)**: Monitoramento de custos e distribuição de status via gráficos profissionais.
 
-### Gestão de Inventário
-É possível cadastrar, editar e excluir equipamentos eletrônicos. Cada item possui informações de número de série, patrimônio, laboratório de localização, data de compra e status atual. A lista conta com busca instantânea e paginação para suportar grandes volumes de dados.
+## Funcionalidades Detalhadas
 
-### Registro de Manutenções
-O módulo de manutenção permite documentar serviços preventivos e corretivos. É possível selecionar o equipamento de uma lista pré-cadastrada, definir o custo do serviço, o técnico responsável e descrever detalhadamente o que foi realizado (troca de componentes, reparos em placas, atualizações, etc).
+### 📊 Dashboard e Inteligência
+O painel exibe a contagem automática de equipamentos por estado: **Funcionando, Em Manutenção, Atenção e Parado**. Os cards são interativos, permitindo filtrar a lista de ativos com um único toque.
 
-### Relatórios e Custos
-A tela de relatórios apresenta o investimento total realizado em manutenções e a distribuição dos serviços entre preventivos e corretivos. Também exibe estatísticas detalhadas da frota.
+### 🛠️ Gestão de Inventário Pro
+- **Listagem Paginada**: Sistema de navegação por páginas (Anterior/Próxima) para suportar milhares de itens sem perda de performance.
+- **Edição Completa**: Controle total sobre os dados do patrimônio, incluindo setor, data de compra e periodicidade de manutenção.
 
-## Tecnologias e Arquitetura
+### 📅 Agenda de Serviços (Timeline)
+Uma tela dedicada que organiza todas as manutenções agendadas em uma linha do tempo cronológica. Permite ao gestor prever a carga de trabalho e evitar paradas não planejadas.
 
-O aplicativo foi desenvolvido utilizando as seguintes tecnologias:
+### ✅ Checklist de Manutenção
+Ao registrar ou editar um serviço, o técnico conta com um checklist de procedimentos padrão (Limpeza, Teste de Voltagem, Troca de Pasta, etc.). Isso garante a padronização e a qualidade técnica de cada intervenção.
 
-- Linguagem: Kotlin
-- Banco de Dados: Firebase Firestore
-- Autenticação: Firebase Auth
-- Interface: Material Components e ConstraintLayout
-- Gerenciador de dependências: Gradle (Kotlin DSL)
+### 📈 Analytics e Relatórios Visuais
+Substituindo listas de texto por visualizações ricas, o módulo de relatórios utiliza gráficos de:
+- **Pizza**: Distribuição de status da frota.
+- **Barras**: Comparativo de custos por tipo de serviço.
+- **Financeiro**: Cálculo automático do investimento total em ativos.
 
-## Como configurar o ambiente
+## Tecnologias Utilizadas
 
-1. Clone o repositório para sua máquina local.
-2. No Firebase Console, crie um novo projeto e adicione um app Android com o pacote br.com.faculdade.imepac.
-3. Coloque o arquivo google-services.json na pasta app/.
-4. Ative a autenticação por E-mail/Senha e o Firestore no painel do Firebase.
-5. Compile o projeto através do Android Studio.
+- **Linguagem**: Kotlin
+- **Persistência & Nuvem**: Firebase Firestore (NoSQL)
+- **Segurança**: Firebase Authentication
+- **Gráficos**: MPAndroidChart
+- **UI/UX**: Material Design 3, ConstraintLayout e Animações de Transição
+- **Paginação**: Lógica de cursor baseada em DocumentSnapshots (Firestore)
 
-## Sobre o projeto
+## Como Rodar o Projeto
 
-O sistema foi desenvolvido como parte das atividades acadêmicas na IMEPAC, com o objetivo de aplicar conceitos de arquitetura móvel, integração com serviços de nuvem e design de interface moderna.
+1. Clone o repositório.
+2. Adicione o seu `google-services.json` na pasta `/app`.
+3. Certifique-se de que o Firestore possui os índices necessários (o link de criação aparecerá no Logcat caso uma consulta falhe).
+4. Use o Android Studio (versão Hedgehog ou superior) para compilar.
 
-Desenvolvido por Rogélio Fraga.
+---
+Desenvolvido por **Rogélio Fraga**. 
+*Focado em entregar excelência técnica e design de alto nível.*

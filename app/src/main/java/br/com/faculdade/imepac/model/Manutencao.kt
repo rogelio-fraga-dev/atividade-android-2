@@ -1,4 +1,4 @@
-﻿package br.com.faculdade.imepac.model
+package br.com.faculdade.imepac.model
 
 data class Manutencao(
     val id: String = "",
@@ -11,5 +11,6 @@ data class Manutencao(
     val custo: Double = 0.0,
     val responsavel: String = "",
     val statusManutencao: String = "Agendada",
+    val checklist: List<String> = emptyList(),
     val createdAt: com.google.firebase.Timestamp? = null
 )

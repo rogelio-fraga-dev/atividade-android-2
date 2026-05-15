@@ -64,6 +64,9 @@ class Dashboard : AppCompatActivity() {
         findViewById<View>(R.id.btn_ir_relatorios_card).setOnClickListener {
             startActivity(Intent(this, RelatoriosActivity::class.java))
         }
+        findViewById<View>(R.id.btn_ir_agenda_card).setOnClickListener {
+            startActivity(Intent(this, AgendaActivity::class.java))
+        }
 
         // Toolbar Actions
         findViewById<View>(R.id.card_profile_thumb).setOnClickListener {
