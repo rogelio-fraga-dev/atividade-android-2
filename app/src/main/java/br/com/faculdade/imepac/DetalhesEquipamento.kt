@@ -29,7 +29,11 @@ class DetalhesEquipamento : AppCompatActivity() {
         val id = intent.getStringExtra("equipamento_id") ?: ""
 
         val rv = findViewById<RecyclerView>(R.id.rv_historico_detalhe)
-        adapter = ManutencaoAdapter(historico) {}
+        adapter = ManutencaoAdapter(historico) { manutencao ->
+            val intent = Intent(this, EditarManutencao::class.java)
+            intent.putExtra("manutencao_id", manutencao.id)
+            startActivity(intent)
+        }
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
 

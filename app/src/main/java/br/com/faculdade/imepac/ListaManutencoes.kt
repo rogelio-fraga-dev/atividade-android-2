@@ -21,7 +21,7 @@ class ListaManutencoes : AppCompatActivity() {
     private var equipamentoId: String? = null
     private var equipamentoNome: String? = null
     private var lastVisible: DocumentSnapshot? = null
-    private val PAGE_SIZE = 10L
+    private var PAGE_SIZE = 5L
     private var isLoading = false
     private var hasMore = true
 
@@ -40,19 +40,18 @@ class ListaManutencoes : AppCompatActivity() {
         }
 
         val rv = findViewById<RecyclerView>(R.id.rv_manutencoes)
-        adapter = ManutencaoAdapter(lista) { /* click reservado para detalhes futuro */ }
+        adapter = ManutencaoAdapter(lista) { manutencao ->
+            val intent = Intent(this, EditarManutencao::class.java)
+            intent.putExtra("manutencao_id", manutencao.id)
+            startActivity(intent)
+        }
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
 
         // Scroll paginação
-        rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                val lm = rv.layoutManager as LinearLayoutManager
-                if (!isLoading && hasMore && lm.findLastCompletelyVisibleItemPosition() >= lista.size - 3) {
-                    carregarManutencoes(paginar = true)
-                }
-            }
-        })
+        findViewById<View>(R.id.btn_ver_mais_manut).setOnClickListener {
+            carregarManutencoes(paginar = true)
+        }
 
         findViewById<View>(R.id.ic_voltar).setOnClickListener { finish() }
         findViewById<View>(R.id.fab_nova_manutencao).setOnClickListener {
@@ -63,8 +62,25 @@ class ListaManutencoes : AppCompatActivity() {
         }
 
         // Botão de filtro (listagem/ordenar)
-        findViewById<View>(R.id.ic_filtro_toolbar_manut).setOnClickListener {
-            android.widget.Toast.makeText(this, "Filtros avançados em breve!", android.widget.Toast.LENGTH_SHORT).show()
+        findViewById<View>(R.id.ic_filtro_toolbar_manut).setOnClickListener { view ->
+            val popup = androidx.appcompat.widget.PopupMenu(this, view)
+            popup.menu.add("Mostrar 5 registros")
+            popup.menu.add("Mostrar 10 registros")
+            popup.menu.add("Mostrar 20 registros")
+            popup.setOnMenuItemClickListener { item ->
+                PAGE_SIZE = when(item.title) {
+                    "Mostrar 5 registros" -> 5L
+                    "Mostrar 10 registros" -> 10L
+                    "Mostrar 20 registros" -> 20L
+                    else -> 5L
+                }
+                lista.clear()
+                lastVisible = null
+                hasMore = true
+                carregarManutencoes(false)
+                true
+            }
+            popup.show()
         }
 
         carregarManutencoes(paginar = false)
@@ -116,6 +132,7 @@ class ListaManutencoes : AppCompatActivity() {
             if (!paginar) lista.clear()
             lista.addAll(novos)
             adapter.notifyDataSetChanged()
+            findViewById<View>(R.id.btn_ver_mais_manut).visibility = if (hasMore) View.VISIBLE else View.GONE
 
         }.addOnFailureListener { 
             isLoading = false

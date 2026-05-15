@@ -24,7 +24,7 @@ class ListaEquipamentos : AppCompatActivity() {
     private val listaCompleta = mutableListOf<Equipamento>()
 
     private var lastVisible: DocumentSnapshot? = null
-    private val PAGE_SIZE = 20L
+    private var PAGE_SIZE = 5L
     private var isLoading = false
     private var hasMore = true
     private var filtroStatus: String? = null
@@ -48,15 +48,9 @@ class ListaEquipamentos : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                val lm = rv.layoutManager as LinearLayoutManager
-                if (!isLoading && hasMore &&
-                    lm.findLastCompletelyVisibleItemPosition() >= listaCompleta.size - 3) {
-                    carregarEquipamentos(paginar = true)
-                }
-            }
-        })
+        findViewById<View>(R.id.btn_ver_mais).setOnClickListener {
+            carregarEquipamentos(paginar = true)
+        }
 
         findViewById<View>(R.id.fab_novo_equipamento).setOnClickListener {
             startActivity(Intent(this, CadastroEquipamento::class.java))
@@ -64,8 +58,25 @@ class ListaEquipamentos : AppCompatActivity() {
 
         findViewById<View>(R.id.ic_voltar).setOnClickListener { finish() }
 
-        findViewById<View>(R.id.ic_filtro_toolbar).setOnClickListener {
-            startActivity(Intent(this, FiltroEquipamentos::class.java))
+        findViewById<View>(R.id.ic_filtro_toolbar).setOnClickListener { view ->
+            val popup = androidx.appcompat.widget.PopupMenu(this, view)
+            popup.menu.add("Mostrar 5 itens")
+            popup.menu.add("Mostrar 10 itens")
+            popup.menu.add("Mostrar 20 itens")
+            popup.setOnMenuItemClickListener { item ->
+                PAGE_SIZE = when(item.title) {
+                    "Mostrar 5 itens" -> 5L
+                    "Mostrar 10 itens" -> 10L
+                    "Mostrar 20 itens" -> 20L
+                    else -> 5L
+                }
+                listaCompleta.clear()
+                lastVisible = null
+                hasMore = true
+                carregarEquipamentos(false)
+                true
+            }
+            popup.show()
         }
 
         findViewById<EditText>(R.id.edit_busca).addTextChangedListener { editable ->
@@ -127,6 +138,7 @@ class ListaEquipamentos : AppCompatActivity() {
             listaCompleta.addAll(novos)
             adapter.notifyDataSetChanged()
             progress.visibility = View.GONE
+            findViewById<View>(R.id.btn_ver_mais).visibility = if (hasMore) View.VISIBLE else View.GONE
         }.addOnFailureListener { e ->
             isLoading = false
             progress.visibility = View.GONE
