@@ -32,6 +32,46 @@ Substituindo listas de texto por visualizações ricas, o módulo de relatórios
 - **Barras**: Comparativo de custos por tipo de serviço.
 - **Financeiro**: Cálculo automático do investimento total em ativos.
 
+## Detalhamento das Telas (Guia para Apresentação)
+
+Para facilitar a compreensão do sistema, abaixo estão detalhadas as responsabilidades de cada tela:
+
+### 1. Autenticação (Login e Cadastro)
+*   **Finalidade**: Garantir o acesso seguro e individualizado aos dados.
+*   **Destaque**: Integração em tempo real com **Firebase Auth**. O cadastro coleta nome e e-mail para personalizar a experiência do usuário.
+
+### 2. Dashboard (Painel Principal)
+*   **Finalidade**: Centralizar as métricas de saúde da frota.
+*   **Funcionalidades**: 
+    *   **KPIs Dinâmicos**: Contagem automática de ativos por status (Funcionando, Em Manutenção, Atenção, Parado).
+    *   **Navegação Rápida**: Atalhos visuais para todas as áreas do sistema.
+
+### 3. Inventário de Ativos (Lista de Equipamentos)
+*   **Finalidade**: Gestão completa dos equipamentos eletrônicos.
+*   **Funcionalidades**:
+    *   **Paginação Customizada**: Carregamento de 5 em 5 itens para otimizar o uso de dados.
+    *   **Busca em Tempo Real**: Filtro instantâneo por nome ou patrimônio.
+    *   **Edição/Exclusão**: Controle total sobre o ciclo de vida do ativo.
+
+### 4. Agenda de Serviços (Timeline)
+*   **Finalidade**: Planejamento preventivo.
+*   **Funcionalidades**: Exibe manutenções futuras em ordem cronológica, permitindo que a equipe técnica se organize antes que falhas ocorram.
+
+### 5. Histórico e Registro de Manutenções
+*   **Finalidade**: Documentar todas as intervenções técnicas.
+*   **Destaque**: O formulário inclui um **Checklist de Procedimentos**, garantindo que etapas críticas (como limpeza e teste de estresse) sejam sempre realizadas.
+
+### 6. Analytics e Relatórios (Upgrade Visual)
+*   **Finalidade**: Auditoria de custos e saúde do laboratório.
+*   **Gráficos**:
+    *   **Distribuição (Pizza)**: Proporção de equipamentos operacionais vs. parados.
+    *   **Custos (Barras)**: Comparativo de gastos entre manutenções Preventivas e Corretivas.
+    *   **Investimento Total**: Soma automatizada de todos os custos registrados.
+
+### 7. Perfil do Usuário
+*   **Finalidade**: Gestão de conta e personalização.
+*   **Funcionalidades**: Visualização dos dados do técnico logado e opção de Logout seguro.
+
 ## Tecnologias Utilizadas
 
 - **Linguagem**: Kotlin
