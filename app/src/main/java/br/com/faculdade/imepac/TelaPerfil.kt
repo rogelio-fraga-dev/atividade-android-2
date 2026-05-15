@@ -32,6 +32,16 @@ class TelaPerfil : AppCompatActivity() {
             finish()
         }
 
+        findViewById<android.view.View>(R.id.btn_seed_full).setOnClickListener {
+            br.com.faculdade.imepac.utils.SeedData.seedDatabase { success ->
+                if (success) {
+                    android.widget.Toast.makeText(this, "Sistema populado com sucesso!", android.widget.Toast.LENGTH_SHORT).show()
+                } else {
+                    android.widget.Toast.makeText(this, "Erro ao popular sistema.", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         findViewById<android.view.View>(R.id.ic_voltar).setOnClickListener { finish() }
 
         carregarDadosUsuario()

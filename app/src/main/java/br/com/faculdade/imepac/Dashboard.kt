@@ -68,6 +68,16 @@ class Dashboard : AppCompatActivity() {
             startActivity(Intent(this, AgendaActivity::class.java))
         }
 
+        findViewById<View>(R.id.btn_ir_tutoriais).setOnClickListener {
+            startActivity(Intent(this, TutoriaisActivity::class.java))
+        }
+        findViewById<View>(R.id.btn_ir_estoque).setOnClickListener {
+            startActivity(Intent(this, EstoqueActivity::class.java))
+        }
+        findViewById<View>(R.id.btn_ir_setores).setOnClickListener {
+            startActivity(Intent(this, SetoresActivity::class.java))
+        }
+
         // Toolbar Actions
         findViewById<View>(R.id.card_profile_thumb).setOnClickListener {
             startActivity(Intent(this, TelaPerfil::class.java))
