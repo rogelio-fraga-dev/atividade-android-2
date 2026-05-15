@@ -50,7 +50,7 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_ver_mais_manut"
+        app:layout_constraintBottom_toTopOf="@id/layout_paginacao_manut"
         app:layout_constraintTop_toBottomOf="@id/toolbar_lista_manut" />
 
     <LinearLayout

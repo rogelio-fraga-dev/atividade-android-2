@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.github.PhilJay.charting.charts.BarChart
-import com.github.PhilJay.charting.charts.PieChart
-import com.github.PhilJay.charting.data.*
-import com.github.PhilJay.charting.formatter.IndexAxisValueFormatter
-import com.github.PhilJay.charting.utils.ColorTemplate
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
