@@ -60,7 +60,7 @@ class FormLogin : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     progressbar.visibility = View.GONE
-                    navegarParaTelaPerfil()
+                    navegarParaDashboard()
                 } else {
                     progressbar.visibility = View.GONE
                     val mensagemErro = task.exception?.message ?: "Erro desconhecido"
@@ -73,9 +73,16 @@ class FormLogin : AppCompatActivity() {
             }
     }
 
-    private fun navegarParaTelaPerfil() {
-        val intent = Intent(this@FormLogin, TelaPerfil::class.java)
-        startActivity(intent)
-        finish()
+    private fun navegarParaDashboard() {
+        try {
+            val intent = Intent(this@FormLogin, Class.forName("br.com.faculdade.imepac.Dashboard"))
+            startActivity(intent)
+            finish()
+        } catch (e: ClassNotFoundException) {
+            // Fallback para TelaPerfil se Dashboard ainda não existir
+            val intent = Intent(this@FormLogin, TelaPerfil::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

@@ -10,7 +10,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class TelaPerfil : AppCompatActivity() {
     private lateinit var mailUser: TextView
-    private lateinit var usuarioUser: TextView
+    private lateinit var nomeUser: TextView
+    private lateinit var cargoUser: TextView
+    private lateinit var empresaUser: TextView
     private lateinit var bt_sair: Button
     private lateinit var db: FirebaseFirestore
 
@@ -19,40 +21,40 @@ class TelaPerfil : AppCompatActivity() {
         setContentView(R.layout.activity_tela_perfil)
         supportActionBar?.hide()
         
-        iniciarComponentes()
         db = FirebaseFirestore.getInstance()
+        iniciarComponentes()
 
         bt_sair.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            val intent = Intent(this@TelaPerfil, FormLogin::class.java)
+            val intent = Intent(this, FormLogin::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
         }
+
+        findViewById<android.view.View>(R.id.ic_voltar).setOnClickListener { finish() }
+
+        carregarDadosUsuario()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val email = FirebaseAuth.getInstance().currentUser?.email
-        if (email != null) {
-            mailUser.text = email
-            buscarNomeDoEmail(email)
-        }
-    }
-
-    private fun buscarNomeDoEmail(email: String) {
-        val usuariosRef = db.collection("Usuarios")
-        usuariosRef.whereEqualTo("email", email).get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    val nome = querySnapshot.documents[0].getString("nome")
-                    usuarioUser.text = nome
+    private fun carregarDadosUsuario() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        db.collection("Usuarios").document(uid).get()
+            .addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    nomeUser.text = doc.getString("nome") ?: "Não informado"
+                    mailUser.text = doc.getString("email") ?: "Não informado"
+                    cargoUser.text = doc.getString("cargo") ?: "Não informado"
+                    empresaUser.text = doc.getString("empresa") ?: "Não informado"
                 }
             }
     }
 
     private fun iniciarComponentes() {
         mailUser = findViewById(R.id.textEmailUser)
-        usuarioUser = findViewById(R.id.textNomeUser)
+        nomeUser = findViewById(R.id.textNomeUser)
+        cargoUser = findViewById(R.id.textCargoUser)
+        empresaUser = findViewById(R.id.textEmpresaUser)
         bt_sair = findViewById(R.id.bt_sair)
     }
 }

@@ -5,16 +5,12 @@ plugins {
 
 android {
     namespace = "br.com.faculdade.imepac"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
-
+    compileSdk = 34
+    
     defaultConfig {
         applicationId = "br.com.faculdade.imepac"
         minSdk = 33
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -42,6 +38,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    
+    // RecyclerView para listas paginadas
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // CardView para cards de equipamentos e manutenções
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // SwipeRefreshLayout para pull-to-refresh nas listas
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
