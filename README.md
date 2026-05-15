@@ -1,47 +1,38 @@
-# ManutenControl - Sistema de Gestão de Manutenção
+# Sistema de Gestão Hospitalar IMEPAC 🏥
 
-O **ManutenControl** é uma plataforma avançada para gestão de inventário e controle de manutenção de ativos eletrônicos. Desenvolvido com foco em escalabilidade e experiência do usuário, o sistema oferece ferramentas completas para a gestão técnica de instituições.
+Este projeto é uma solução completa para gestão de equipamentos médicos, manutenções, estoque e análise de custos, desenvolvida para a Faculdade IMEPAC.
 
-## Funcionalidades do Sistema
+## ✨ Novas Funcionalidades e Melhorias
 
-### 📊 Inteligência Operacional
-*   **Dashboard em Tempo Real**: Visualize a saúde da frota através de KPIs automáticos.
-*   **Analytics Pro**: Gráficos de distribuição de ativos (Pizza) e análise de custos por tipo de serviço (Barras).
+Após as últimas atualizações, o sistema agora conta com:
 
-### 🛠️ Gestão de Manutenção e Ativos
-*   **Inventário Paginado**: Navegação otimizada para grandes volumes de equipamentos.
-*   **Agenda Cronológica**: Linha do tempo das próximas manutenções agendadas.
-*   **Checklist de Serviço**: Padronização técnica na execução de cada reparo.
+### 📊 Inteligência e Analytics
+- **Dashboard de Relatórios**: Visualização gráfica de custos por categoria e saúde da planta (status dos ativos).
+- **KPIs em Tempo Real**: Indicadores de total de equipamentos, manutenções realizadas, setores cadastrados e peças em estoque.
+- **Filtro Temporal Dinâmico**: Análise de investimentos em manutenção filtrados por 1, 3, 6 ou 12 meses.
 
-### 📚 Base de Conhecimento
-*   **Tutoriais**: Consulta rápida a manuais e procedimentos técnicos para agilizar a resolução de problemas comuns.
+### 📋 Gestão Completa (CRUD)
+- **Base de Conhecimento (Tutoriais)**: Cadastro e consulta de guias técnicos para manutenção.
+- **Estoque de Peças**: Controle de quantidade e valores unitários de peças para reposição.
+- **Gestão de Setores**: Mapeamento de responsáveis e localização física por prédio.
+- **Agenda de Serviços**: Listagem cronológica de manutenções agendadas.
 
-### 📦 Controle de Insumos (Estoque)
-*   **Gestão de Peças**: Controle de estoque de componentes (baterias, memórias, etc.) com monitoramento de quantidades e preços.
+### ⚡ Experiência do Usuário e Performance
+- **Paginação Robusta**: Implementação de paginação estrita (5, 10, 20 itens) em todas as telas de listagem para otimização de dados.
+- **Busca em Tempo Real**: Campo de pesquisa por nome/título em todas as listas.
+- **Interface Padronizada**: Layouts unificados seguindo a identidade visual da IMEPAC, com botões de navegação e componentes modernos.
 
-### 🏢 Infraestrutura (Setores)
-*   **Gestão de Localidades**: Organização hierárquica por Prédios e Salas para facilitar a localização física dos ativos.
+## 🛠️ Tecnologias Utilizadas
+- **Linguagem**: Kotlin
+- **Banco de Dados**: Google Firebase Firestore
+- **Autenticação**: Firebase Auth
+- **Gráficos**: MPAndroidChart
+- **Layout**: Material Design Components
 
-## Detalhamento das Telas
-
-1.  **Splash & Autenticação**: Tela de carregamento e sistema de Login/Cadastro seguro via Firebase.
-2.  **Dashboard**: Painel central de controle com acesso rápido a todos os módulos.
-3.  **Lista de Equipamentos**: Gestão de ativos com busca e paginação.
-4.  **Cadastro/Edição de Equipamento**: Formulários completos para controle de patrimônio.
-5.  **Histórico de Manutenções**: Registro detalhado de todos os serviços realizados.
-6.  **Agenda de Serviços**: Timeline de manutenções programadas.
-7.  **Analytics**: Relatórios visuais com gráficos profissionais.
-8.  **Base de Conhecimento**: Lista de tutoriais e procedimentos técnicos.
-9.  **Estoque**: Controle de peças e componentes.
-10. **Setores**: Gestão de prédios e salas da instituição.
-
-## Tecnologias
-
-- **Kotlin** (Android Nativo)
-- **Firebase** (Firestore & Auth)
-- **MPAndroidChart** (Visualização de Dados)
-- **Material Design 3** (Interface Moderna)
+## 🚀 Como Executar
+1. Certifique-se de ter o arquivo `google-services.json` na pasta `/app`.
+2. Sincronize o projeto com o Gradle.
+3. Execute o aplicativo em um emulador ou dispositivo físico Android.
 
 ---
-Desenvolvido por **Rogélio Fraga**. 
-*Focado em excelência técnica e gestão eficiente.*
+*Projeto desenvolvido para a Atividade de Android 2 - Faculdade IMEPAC.* 🎓

@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Relatórios e Custos"
+        android:text="Inteligência e Relatórios"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -46,26 +46,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="16dp">
 
-            <!-- Card Gasto Total -->
+            <!-- Resumo KPI (Horizontal Scroll) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp">
+
+                    <include layout="@layout/card_kpi_small" android:id="@+id/kpi_total_equip" />
+                    <include layout="@layout/card_kpi_small" android:id="@+id/kpi_total_manut" />
+                    <include layout="@layout/card_kpi_small" android:id="@+id/kpi_total_setores" />
+                    <include layout="@layout/card_kpi_small" android:id="@+id/kpi_total_estoque" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Card Gasto Total com Filtro -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp"
-                    android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Investimento em Manutenção"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                    android:padding="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Investimento em Manutenção"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/btn_filtro_periodo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="Últimos 12 Meses ▼"
+                            android:textColor="@color/azul_imepac"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:clickable="true"
+                            android:focusable="true"/>
+                    </RelativeLayout>
+
                     <TextView
                         android:id="@+id/txt_custo_total"
                         android:layout_width="wrap_content"
@@ -78,12 +114,13 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Gráfico Status -->
             <TextView
                 style="@style/SectionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Distribuição de Manutenções" />
+                android:text="Saúde da Planta (Ativos)" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -97,12 +134,13 @@
                     android:padding="16dp" />
             </androidx.cardview.widget.CardView>
 
+            <!-- Gráfico Custos -->
             <TextView
                 style="@style/SectionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Custos por Categoria" />
+                android:text="Gastos por Categoria" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -117,9 +155,6 @@
             </androidx.cardview.widget.CardView>
 
             <View android:layout_width="match_parent" android:layout_height="40dp" />
-
-            <View android:layout_width="match_parent" android:layout_height="40dp" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

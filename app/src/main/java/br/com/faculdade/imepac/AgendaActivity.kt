@@ -82,7 +82,6 @@ class AgendaActivity : AppCompatActivity() {
         var query: Query = db.collection("Manutencoes")
             .whereEqualTo("uid", uid)
             .whereEqualTo("statusManutencao", "Agendada")
-            .orderBy("data", Query.Direction.ASCENDING) // Agenda é cronológica futura
 
         if (paginar) {
             if (forward && lastVisible != null) {

@@ -8,7 +8,7 @@
     <View
         android:id="@+id/toolbar_bg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:background="@drawable/background"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,16 +26,43 @@
 
     <TextView
         android:id="@+id/txt_titulo_tela"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:text="Título da Tela"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/ic_voltar"
+        app:layout_constraintEnd_toStartOf="@id/ic_filtro_opcoes"
         app:layout_constraintStart_toEndOf="@id/ic_voltar"
         app:layout_constraintTop_toTopOf="@id/ic_voltar" />
+
+    <ImageButton
+        android:id="@+id/ic_filtro_opcoes"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_dashboard"
+        app:layout_constraintBottom_toBottomOf="@id/ic_voltar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ic_voltar"
+        app:tint="@color/white" />
+
+    <EditText
+        android:id="@+id/edit_busca"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/card_background"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="12dp"
+        android:hint="Buscar por nome..."
+        android:paddingHorizontal="16dp"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_bg" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_listagem"
@@ -43,8 +70,8 @@
         android:layout_height="0dp"
         android:padding="8dp"
         android:clipToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_bg" />
+        app:layout_constraintBottom_toTopOf="@id/layout_paginacao"
+        app:layout_constraintTop_toBottomOf="@id/edit_busca" />
 
     <ProgressBar
         android:id="@+id/progress_loading"
@@ -54,6 +81,61 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_bg" />
+        app:layout_constraintTop_toBottomOf="@id/edit_busca" />
+
+    <LinearLayout
+        android:id="@+id/layout_paginacao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="@drawable/card_background"
+        android:layout_margin="16dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_anterior"
+            style="@style/ButtonOutline"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Anterior"
+            android:textSize="13sp"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txt_pagina_atual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="Página 1"
+            android:textStyle="bold"
+            android:textColor="@color/azul_imepac" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_proxima"
+            style="@style/ButtonOutline"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Próxima"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/fab_adicionar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/fab_background"
+        android:elevation="8dp"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

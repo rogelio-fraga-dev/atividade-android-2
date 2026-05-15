@@ -88,10 +88,14 @@ class ListaEquipamentos : AppCompatActivity() {
                     "Mostrar 20 itens" -> 20L
                     else -> 5L
                 }
+                // Reiniciar paginação completa
                 listaCompleta.clear()
                 lastVisible = null
+                currentFirstDoc = null
+                pageStack.clear()
+                currentPage = 1
                 hasMore = true
-                carregarEquipamentos(false)
+                carregarEquipamentos(paginar = false)
                 true
             }
             popup.show()
@@ -99,13 +103,20 @@ class ListaEquipamentos : AppCompatActivity() {
 
         findViewById<EditText>(R.id.edit_busca).addTextChangedListener { editable ->
             val queryText = editable.toString().lowercase()
-            val filtrada = listaCompleta.filter {
-                (it.nome.lowercase().contains(queryText) ||
-                it.codigo.lowercase().contains(queryText) ||
-                it.setor.lowercase().contains(queryText))
+            if (queryText.isEmpty()) {
+                // Se a busca estiver vazia, restaura a lista original paginada
+                adapter.atualizarLista(listaCompleta)
+                layoutVazio.visibility = if (listaCompleta.isEmpty()) View.VISIBLE else View.GONE
+            } else {
+                // Filtra apenas localmente o que já está carregado na página atual
+                val filtrada = listaCompleta.filter {
+                    (it.nome.lowercase().contains(queryText) ||
+                    it.codigo.lowercase().contains(queryText) ||
+                    it.setor.lowercase().contains(queryText))
+                }
+                adapter.atualizarLista(filtrada)
+                layoutVazio.visibility = if (filtrada.isEmpty()) View.VISIBLE else View.GONE
             }
-            adapter.atualizarLista(filtrada)
-            layoutVazio.visibility = if (filtrada.isEmpty()) View.VISIBLE else View.GONE
         }
 
         carregarEquipamentos(paginar = false)
@@ -119,21 +130,18 @@ class ListaEquipamentos : AppCompatActivity() {
         
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        var query = db.collection("Equipamentos")
+        var query: Query = db.collection("Equipamentos")
             .whereEqualTo("uid", uid)
 
         filtroStatus?.let {
             query = query.whereEqualTo("status", it)
         }
 
-        query = query.orderBy("createdAt", Query.Direction.DESCENDING) 
-
         if (paginar) {
             if (forward && lastVisible != null) {
                 query = query.startAfter(lastVisible!!)
-            } else if (!forward) {
-                // Ao voltar, usamos o documento que era o primeiro daquela página
-                if (startAtDoc != null) query = query.startAt(startAtDoc)
+            } else if (!forward && startAtDoc != null) {
+                query = query.startAt(startAtDoc)
             }
         }
         
@@ -141,9 +149,15 @@ class ListaEquipamentos : AppCompatActivity() {
 
         query.get().addOnSuccessListener { snapshots ->
             isLoading = false
+            progress.visibility = View.GONE
+            
             if (snapshots.isEmpty) {
                 hasMore = false
-                if (currentPage == 1) layoutVazio.visibility = View.VISIBLE
+                if (currentPage == 1) {
+                    layoutVazio.visibility = View.VISIBLE
+                    listaCompleta.clear()
+                    adapter.notifyDataSetChanged()
+                }
                 updateUI()
                 return@addOnSuccessListener
             }
@@ -151,6 +165,9 @@ class ListaEquipamentos : AppCompatActivity() {
             layoutVazio.visibility = View.GONE
             currentFirstDoc = snapshots.documents.first()
             lastVisible = snapshots.documents.last()
+            
+            // Verificação mais precisa de hasMore: carregar PAGE_SIZE + 1 para ter certeza? 
+            // Por enquanto, baseamos no tamanho do retorno
             hasMore = snapshots.size() >= PAGE_SIZE.toInt()
 
             val novos = snapshots.documents.mapNotNull { doc ->
@@ -162,7 +179,6 @@ class ListaEquipamentos : AppCompatActivity() {
             listaCompleta.clear()
             listaCompleta.addAll(novos)
             adapter.notifyDataSetChanged()
-            progress.visibility = View.GONE
             updateUI()
         }.addOnFailureListener { e ->
             isLoading = false

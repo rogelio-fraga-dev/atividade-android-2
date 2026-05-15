@@ -90,10 +90,14 @@ class ListaManutencoes : AppCompatActivity() {
                     "Mostrar 20 registros" -> 20L
                     else -> 5L
                 }
+                // Reiniciar paginação completa
                 lista.clear()
                 lastVisible = null
+                currentFirstDoc = null
+                pageStack.clear()
+                currentPage = 1
                 hasMore = true
-                carregarManutencoes(false)
+                carregarManutencoes(paginar = false)
                 true
             }
             popup.show()
@@ -104,7 +108,13 @@ class ListaManutencoes : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        lista.clear(); lastVisible = null; hasMore = true
+        // Ao voltar para a tela, mantemos a configuração de PAGE_SIZE mas limpamos o estado da lista
+        lista.clear()
+        lastVisible = null
+        currentFirstDoc = null
+        pageStack.clear()
+        currentPage = 1
+        hasMore = true
         carregarManutencoes(paginar = false)
     }
 
@@ -123,8 +133,6 @@ class ListaManutencoes : AppCompatActivity() {
             query = query.whereEqualTo("equipamentoId", equipamentoId)
         }
 
-        query = query.orderBy("createdAt", Query.Direction.DESCENDING)
-
         if (paginar) {
             if (forward && lastVisible != null) {
                 query = query.startAfter(lastVisible!!)
@@ -137,40 +145,26 @@ class ListaManutencoes : AppCompatActivity() {
 
         query.get().addOnSuccessListener { snap ->
             isLoading = false
-            findViewById<View>(R.id.progress_manut).visibility = View.GONE
+            progress.visibility = View.GONE
             
             if (snap.isEmpty) { 
                 hasMore = false
-                if (currentPage == 1) findViewById<View>(R.id.layout_vazio_manut).visibility = View.VISIBLE
+                if (currentPage == 1) {
+                    findViewById<View>(R.id.layout_vazio_manut).visibility = View.VISIBLE
+                    lista.clear()
+                    adapter.notifyDataSetChanged()
+                }
                 updateUI()
                 return@addOnSuccessListener 
             }
-            
-            // Guardar o primeiro snapshot para o stack se estivermos indo pra frente
-            if (forward && paginar) {
-                // O snap que acabou de chegar é a nova página. 
-                // Mas a lógica do stack é guardar o anterior?
-                // Vamos simplificar: pageStack guarda o 'firstVisible' de cada página.
-            }
-            // Na verdade, a lógica correta:
-            // Se estou carregando a página N, e vou pra N+1: guardo o firstVisible da página N.
             
             findViewById<View>(R.id.layout_vazio_manut).visibility = View.GONE
             currentFirstDoc = snap.documents.first()
             lastVisible = snap.documents.last()
             
-            // Para o Anterior funcionar, precisamos guardar o PRIMEIRO snapshot da página que estamos saindo
-            // Na verdade, o 'startAtDoc' passado no Anterior é o que salvamos quando estávamos naquela página.
-            
             hasMore = snap.size() >= PAGE_SIZE.toInt()
             val novos = snap.documents.mapNotNull { d -> d.toObject(Manutencao::class.java)?.copy(id = d.id) }
             
-            // Se estamos indo pra frente, salvamos o primeiro doc da página ATUAL antes de limpá-la
-            if (forward && lista.isNotEmpty()) {
-                // Não, isso daria erro se fôssemos e voltássemos várias vezes.
-                // A lógica do Equipamentos (pageStack.add(listaCompleta.firstOrNull())) no clique é melhor.
-            }
-
             lista.clear()
             lista.addAll(novos)
             adapter.notifyDataSetChanged()
@@ -178,7 +172,7 @@ class ListaManutencoes : AppCompatActivity() {
 
         }.addOnFailureListener { 
             isLoading = false
-            findViewById<View>(R.id.progress_manut).visibility = View.GONE
+            progress.visibility = View.GONE
             carregarSemOrdenacao()
         }
     }

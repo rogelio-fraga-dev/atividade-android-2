@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
 import java.util.*
+import android.widget.PopupMenu
 
 class RelatoriosActivity : AppCompatActivity() {
 
@@ -21,6 +22,7 @@ class RelatoriosActivity : AppCompatActivity() {
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
     private lateinit var pieChart: PieChart
     private lateinit var barChart: BarChart
+    private var mesesFiltro = 12
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +34,55 @@ class RelatoriosActivity : AppCompatActivity() {
         barChart = findViewById(R.id.bar_chart_custos)
 
         findViewById<View>(R.id.ic_voltar).setOnClickListener { finish() }
+        
+        findViewById<View>(R.id.btn_filtro_periodo).setOnClickListener { view ->
+            val popup = PopupMenu(this, view)
+            popup.menu.add("Último Mês")
+            popup.menu.add("Últimos 3 Meses")
+            popup.menu.add("Últimos 6 Meses")
+            popup.menu.add("Últimos 12 Meses")
+            popup.setOnMenuItemClickListener { item ->
+                findViewById<TextView>(R.id.btn_filtro_periodo).text = "${item.title} ▼"
+                mesesFiltro = when(item.title) {
+                    "Último Mês" -> 1
+                    "Últimos 3 Meses" -> 3
+                    "Últimos 6 Meses" -> 6
+                    else -> 12
+                }
+                carregarDadosFinanceiros()
+                true
+            }
+            popup.show()
+        }
 
         if (uid != null) {
+            carregarKPIs()
             carregarDadosFinanceiros()
             carregarGraficoStatus()
             carregarGraficoCustos()
+        }
+    }
+
+    private fun carregarKPIs() {
+        // Total Equipamentos
+        db.collection("Equipamentos").whereEqualTo("uid", uid).get().addOnSuccessListener { 
+            findViewById<View>(R.id.kpi_total_equip).findViewById<TextView>(R.id.txt_kpi_label).text = "EQUIPAMENTOS"
+            findViewById<View>(R.id.kpi_total_equip).findViewById<TextView>(R.id.txt_kpi_value).text = it.size().toString()
+        }
+        // Total Manutenções
+        db.collection("Manutencoes").whereEqualTo("uid", uid).get().addOnSuccessListener { 
+            findViewById<View>(R.id.kpi_total_manut).findViewById<TextView>(R.id.txt_kpi_label).text = "MANUTENÇÕES"
+            findViewById<View>(R.id.kpi_total_manut).findViewById<TextView>(R.id.txt_kpi_value).text = it.size().toString()
+        }
+        // Total Setores
+        db.collection("Setores").whereEqualTo("uid", uid).get().addOnSuccessListener { 
+            findViewById<View>(R.id.kpi_total_setores).findViewById<TextView>(R.id.txt_kpi_label).text = "SETORES"
+            findViewById<View>(R.id.kpi_total_setores).findViewById<TextView>(R.id.txt_kpi_value).text = it.size().toString()
+        }
+        // Total Estoque
+        db.collection("Estoque").whereEqualTo("uid", uid).get().addOnSuccessListener { 
+            findViewById<View>(R.id.kpi_total_estoque).findViewById<TextView>(R.id.txt_kpi_label).text = "PEÇAS ESTOQUE"
+            findViewById<View>(R.id.kpi_total_estoque).findViewById<TextView>(R.id.txt_kpi_value).text = it.size().toString()
         }
     }
 
@@ -46,8 +92,13 @@ class RelatoriosActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { snap ->
                 var total = 0.0
+                val limiteData = Calendar.getInstance().apply { add(Calendar.MONTH, -mesesFiltro) }.time
+                
                 for (doc in snap) {
-                    total += doc.getDouble("custo") ?: 0.0
+                    val dataDoc = doc.getTimestamp("createdAt")?.toDate()
+                    if (dataDoc == null || dataDoc.after(limiteData)) {
+                        total += doc.getDouble("custo") ?: 0.0
+                    }
                 }
                 val format = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
                 findViewById<TextView>(R.id.txt_custo_total).text = format.format(total)
@@ -70,10 +121,10 @@ class RelatoriosActivity : AppCompatActivity() {
                     entries.add(PieEntry(count.toFloat(), status))
                 }
 
-                val dataSet = PieDataSet(entries, "Status dos Ativos")
+                val dataSet = PieDataSet(entries, "")
                 dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
                 dataSet.valueTextColor = Color.BLACK
-                dataSet.valueTextSize = 14f
+                dataSet.valueTextSize = 12f
 
                 val data = PieData(dataSet)
                 pieChart.data = data
@@ -107,7 +158,7 @@ class RelatoriosActivity : AppCompatActivity() {
 
                 val dataSet = BarDataSet(entries, "Custos (R$)")
                 dataSet.colors = ColorTemplate.LIBERTY_COLORS.toList()
-                dataSet.valueTextSize = 12f
+                dataSet.valueTextSize = 10f
 
                 val data = BarData(dataSet)
                 barChart.data = data

@@ -152,15 +152,8 @@
         style="@style/ButtonDanger"
         android:layout_width="match_parent"
         android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="24dp"
         android:text="Sair da Conta"
         app:layout_constraintTop_toBottomOf="@id/cardInfo" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_seed_full"
-        style="@style/ButtonOutline"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:text="Popular Todo o Sistema (Seed)"
-        app:layout_constraintTop_toBottomOf="@id/bt_sair" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
