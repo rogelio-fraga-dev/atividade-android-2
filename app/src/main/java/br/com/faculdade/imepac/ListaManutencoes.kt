@@ -62,6 +62,11 @@ class ListaManutencoes : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Botão de filtro (listagem/ordenar)
+        findViewById<View>(R.id.ic_filtro_toolbar_manut).setOnClickListener {
+            android.widget.Toast.makeText(this, "Filtros avançados em breve!", android.widget.Toast.LENGTH_SHORT).show()
+        }
+
         carregarManutencoes(paginar = false)
     }
 
@@ -74,6 +79,9 @@ class ListaManutencoes : AppCompatActivity() {
     private fun carregarManutencoes(paginar: Boolean) {
         if (isLoading || !hasMore) return
         isLoading = true
+        val progress = findViewById<View>(R.id.progress_manut)
+        progress.visibility = View.VISIBLE
+        
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         var query: Query = db.collection("Manutencoes")
@@ -91,6 +99,8 @@ class ListaManutencoes : AppCompatActivity() {
 
         query.get().addOnSuccessListener { snap ->
             isLoading = false
+            findViewById<View>(R.id.progress_manut).visibility = View.GONE
+            
             if (snap.isEmpty) { 
                 hasMore = false
                 if (!paginar && lista.isEmpty()) {
@@ -102,11 +112,36 @@ class ListaManutencoes : AppCompatActivity() {
             findViewById<View>(R.id.layout_vazio_manut).visibility = View.GONE
             lastVisible = snap.documents.last()
             hasMore = snap.size() >= PAGE_SIZE.toInt()
-            val novos = snap.documents.map { d -> d.toObject(Manutencao::class.java)!!.copy(id = d.id) }
+            val novos = snap.documents.mapNotNull { d -> d.toObject(Manutencao::class.java)?.copy(id = d.id) }
             if (!paginar) lista.clear()
             lista.addAll(novos)
             adapter.notifyDataSetChanged()
 
-        }.addOnFailureListener { isLoading = false }
+        }.addOnFailureListener { 
+            isLoading = false
+            findViewById<View>(R.id.progress_manut).visibility = View.GONE
+            carregarSemOrdenacao()
+        }
+    }
+
+    private fun carregarSemOrdenacao() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        var query: Query = db.collection("Manutencoes").whereEqualTo("uid", uid)
+        
+        if (equipamentoId != null) {
+            query = query.whereEqualTo("equipamentoId", equipamentoId)
+        }
+
+        query.limit(50).get().addOnSuccessListener { snap ->
+            if (snap.isEmpty && lista.isEmpty()) {
+                findViewById<View>(R.id.layout_vazio_manut).visibility = View.VISIBLE
+                return@addOnSuccessListener
+            }
+            findViewById<View>(R.id.layout_vazio_manut).visibility = View.GONE
+            val novos = snap.documents.map { d -> d.toObject(Manutencao::class.java)!!.copy(id = d.id) }
+            lista.clear()
+            lista.addAll(novos)
+            adapter.notifyDataSetChanged()
+        }
     }
 }

@@ -64,6 +64,10 @@ class ListaEquipamentos : AppCompatActivity() {
 
         findViewById<View>(R.id.ic_voltar).setOnClickListener { finish() }
 
+        findViewById<View>(R.id.ic_filtro_toolbar).setOnClickListener {
+            startActivity(Intent(this, FiltroEquipamentos::class.java))
+        }
+
         findViewById<EditText>(R.id.edit_busca).addTextChangedListener { editable ->
             val queryText = editable.toString().lowercase()
             val filtrada = listaCompleta.filter {
@@ -81,6 +85,9 @@ class ListaEquipamentos : AppCompatActivity() {
     private fun carregarEquipamentos(paginar: Boolean) {
         if (isLoading || !hasMore) return
         isLoading = true
+        val progress = findViewById<View>(R.id.progress_equip)
+        progress.visibility = View.VISIBLE
+        
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         var query = db.collection("Equipamentos")
@@ -119,8 +126,10 @@ class ListaEquipamentos : AppCompatActivity() {
             if (!paginar) listaCompleta.clear()
             listaCompleta.addAll(novos)
             adapter.notifyDataSetChanged()
+            progress.visibility = View.GONE
         }.addOnFailureListener { e ->
             isLoading = false
+            progress.visibility = View.GONE
             if (e.message?.contains("index") == true) {
                 carregarSemOrdenacao()
             }
