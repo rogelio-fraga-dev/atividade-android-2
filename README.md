@@ -1,38 +1,50 @@
-# Sistema de Gestão Hospitalar IMEPAC 🏥
+# Sistema de Gestão Hospitalar IMEPAC
 
-Este projeto é uma solução completa para gestão de equipamentos médicos, manutenções, estoque e análise de custos, desenvolvida para a Faculdade IMEPAC.
+Este sistema foi desenvolvido para centralizar e otimizar a gestão de ativos médicos e processos de manutenção da Faculdade IMEPAC. O objetivo principal é resolver a fragmentação de informações sobre o estado dos equipamentos hospitalares, permitindo um controle rigoroso sobre a disponibilidade, custos de reparo e conformidade técnica de cada item da planta.
 
-## ✨ Novas Funcionalidades e Melhorias
+## Problemas Resolvidos
 
-Após as últimas atualizações, o sistema agora conta com:
+A aplicação endereça desafios críticos na gestão hospitalar:
+- Falta de visibilidade em tempo real do status operacional dos equipamentos.
+- Dificuldade em rastrear o histórico de manutenções e custos associados.
+- Descontrole de estoque de peças críticas para reposição imediata.
+- Ausência de uma base de conhecimento centralizada para procedimentos técnicos.
+- Gestão ineficiente de agendas de serviços preventivos e corretivos.
 
-### 📊 Inteligência e Analytics
-- **Dashboard de Relatórios**: Visualização gráfica de custos por categoria e saúde da planta (status dos ativos).
-- **KPIs em Tempo Real**: Indicadores de total de equipamentos, manutenções realizadas, setores cadastrados e peças em estoque.
-- **Filtro Temporal Dinâmico**: Análise de investimentos em manutenção filtrados por 1, 3, 6 ou 12 meses.
+## Funcionalidades e Telas
 
-### 📋 Gestão Completa (CRUD)
-- **Base de Conhecimento (Tutoriais)**: Cadastro e consulta de guias técnicos para manutenção.
-- **Estoque de Peças**: Controle de quantidade e valores unitários de peças para reposição.
-- **Gestão de Setores**: Mapeamento de responsáveis e localização física por prédio.
-- **Agenda de Serviços**: Listagem cronológica de manutenções agendadas.
+### Autenticação e Perfil
+- **Tela de Login**: Acesso restrito via Firebase Authentication para garantir a segurança dos dados.
+- **Tela de Cadastro**: Registro de novos gestores com vinculação de perfil único.
+- **Perfil do Usuário**: Gestão de informações administrativas e preferências de conta.
 
-### ⚡ Experiência do Usuário e Performance
-- **Paginação Robusta**: Implementação de paginação estrita (5, 10, 20 itens) em todas as telas de listagem para otimização de dados.
-- **Busca em Tempo Real**: Campo de pesquisa por nome/título em todas as listas.
-- **Interface Padronizada**: Layouts unificados seguindo a identidade visual da IMEPAC, com botões de navegação e componentes modernos.
+### Dashboard e Inteligência
+- **Painel Principal**: Visualização imediata de KPIs operacionais, dividindo os ativos em quatro categorias críticas: Funcionando, Em Manutenção, Atenção e Parado.
+- **Relatórios e Analytics**: Gráficos dinâmicos para análise de custos por categoria e distribuição de saúde da planta. Suporte a filtros temporais para acompanhamento de investimentos.
 
-## 🛠️ Tecnologias Utilizadas
-- **Linguagem**: Kotlin
-- **Banco de Dados**: Google Firebase Firestore
-- **Autenticação**: Firebase Auth
-- **Gráficos**: MPAndroidChart
-- **Layout**: Material Design Components
+### Gestão de Ativos e Serviços
+- **Gestão de Equipamentos**: Controle completo (CRUD) de ativos hospitalares, incluindo número de série, setor e status operacional.
+- **Histórico de Manutenções**: Registro detalhado de intervenções técnicas, permitindo o acompanhamento de falhas e custos de manutenção.
+- **Agenda de Serviços**: Visualização cronológica de manutenções, facilitando o planejamento de paradas preventivas e corretivas.
 
-## 🚀 Como Executar
-1. Certifique-se de ter o arquivo `google-services.json` na pasta `/app`.
-2. Sincronize o projeto com o Gradle.
-3. Execute o aplicativo em um emulador ou dispositivo físico Android.
+### Suporte Operacional e Infraestrutura
+- **Controle de Estoque**: Gerenciamento de peças de reposição com controle de quantidade e valores unitários.
+- **Base de Tutoriais**: Repositório de guias técnicos e manuais de operação para auxiliar a equipe de engenharia clínica.
+- **Mapeamento de Setores**: Organização logística dos equipamentos por prédios e responsáveis setoriais.
+
+## Diferenciais Técnicos
+
+- **Arquitetura Escalável**: Integração nativa com Google Firebase Firestore para persistência em tempo real e sincronização de dados.
+- **Otimização de Performance**: Sistema de paginação estrita em todas as listas, permitindo a escolha entre 5, 10 ou 20 itens por página para reduzir o consumo de banda e melhorar a resposta do app.
+- **Busca em Tempo Real**: Filtros de pesquisa instantâneos implementados em todas as telas de listagem para localização rápida de itens.
+- **Interface Profissional**: Layout desenvolvido seguindo as diretrizes do Material Design, focado na usabilidade e na experiência do usuário em ambientes produtivos.
+
+## Tecnologias Utilizadas
+
+- **Linguagem**: Kotlin para desenvolvimento Android nativo.
+- **Backend**: Firebase Authentication e Firestore (NoSQL).
+- **Visualização de Dados**: MPAndroidChart para geração de gráficos.
+- **Componentes**: Material Design Components para uma interface coesa e moderna.
 
 ---
-*Projeto desenvolvido para a Atividade de Android 2 - Faculdade IMEPAC.* 🎓
+Projeto desenvolvido para a disciplina de Atividade de Android 2 - Faculdade IMEPAC.
