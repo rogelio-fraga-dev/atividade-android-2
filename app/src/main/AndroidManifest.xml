@@ -17,10 +17,10 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
 
+        <!-- SPLASH — entry point -->
         <activity
-            android:name=".FormLogin"
+            android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,20 +28,18 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".FormCadastro"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".TelaPrincipal"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".TelaPerfil"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".FormLogin"      android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".FormCadastro"   android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".TelaPerfil"     android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".Dashboard"      android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ListaEquipamentos"    android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".CadastroEquipamento"  android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".DetalhesEquipamento"  android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".EditarEquipamento"    android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ListaManutencoes"     android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".CadastroManutencao"   android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".FiltroEquipamentos"   android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".RelatoriosActivity"   android:exported="false" android:theme="@style/AppTheme" android:windowSoftInputMode="adjustResize" />
 
     </application>
 </manifest>

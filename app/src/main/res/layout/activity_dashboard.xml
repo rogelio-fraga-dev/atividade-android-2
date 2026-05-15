@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FA"
+    tools:context=".Dashboard">
+
+    <!-- Header / Toolbar Premium -->
+    <View
+        android:id="@+id/view_header"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/background"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_saudacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:text="Olá, Usuário"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Painel de Controle"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_saudacao" />
+
+    <ImageButton
+        android:id="@+id/bt_logout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_logout"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/txt_saudacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txt_saudacao" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_profile_thumb"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/bt_logout"
+        app:layout_constraintEnd_toStartOf="@id/bt_logout"
+        app:layout_constraintTop_toTopOf="@id/bt_logout">
+        <ImageView
+            android:id="@+id/ic_perfil_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:src="@drawable/person"
+            app:tint="@color/azul_imepac" />
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Stats Cards -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2">
+
+                <!-- Reutilizando os estilos existentes para manter consistência -->
+                <!-- KPI: Funcionando -->
+                <androidx.cardview.widget.CardView 
+                    android:id="@+id/card_kpi_funcionando"
+                    style="@style/CardEquipamento" 
+                    android:layout_width="0dp" 
+                    android:layout_columnWeight="1" 
+                    android:layout_margin="8dp"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:id="@+id/txt_count_funcionando" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="0" android:textColor="@color/status_funcionando" android:textSize="28sp" android:textStyle="bold" />
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_equipment" app:tint="@color/status_funcionando" />
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Funcionando" android:textSize="12sp" android:textColor="@color/text_secondary" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- KPI: Em Manutenção -->
+                <androidx.cardview.widget.CardView 
+                    android:id="@+id/card_kpi_manutencao"
+                    style="@style/CardEquipamento" 
+                    android:layout_width="0dp" 
+                    android:layout_columnWeight="1" 
+                    android:layout_margin="8dp"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:id="@+id/txt_count_manutencao" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="0" android:textColor="@color/status_manutencao" android:textSize="28sp" android:textStyle="bold" />
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_maintenance" app:tint="@color/status_manutencao" />
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Em Reparo" android:textSize="12sp" android:textColor="@color/text_secondary" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- KPI: Atenção -->
+                <androidx.cardview.widget.CardView 
+                    android:id="@+id/card_kpi_atencao"
+                    style="@style/CardEquipamento" 
+                    android:layout_width="0dp" 
+                    android:layout_columnWeight="1" 
+                    android:layout_margin="8dp"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:id="@+id/txt_count_atencao" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="0" android:textColor="@color/status_atencao" android:textSize="28sp" android:textStyle="bold" />
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_dialog_alert" app:tint="@color/status_atencao" />
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atenção" android:textSize="12sp" android:textColor="@color/text_secondary" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- KPI: Parado -->
+                <androidx.cardview.widget.CardView 
+                    android:id="@+id/card_kpi_parado"
+                    style="@style/CardEquipamento" 
+                    android:layout_width="0dp" 
+                    android:layout_columnWeight="1" 
+                    android:layout_margin="8dp"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:id="@+id/txt_count_parado" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="0" android:textColor="@color/status_parado" android:textSize="28sp" android:textStyle="bold" />
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_delete" app:tint="@color/status_parado" />
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Parado" android:textSize="12sp" android:textColor="@color/text_secondary" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </GridLayout>
+
+            <TextView style="@style/SectionTitle" android:text="Menu Rápido" android:layout_marginTop="16dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_ir_equipamentos_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_equipment" app:tint="@color/azul_imepac" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="16dp" android:text="Lista de Equipamentos" android:textStyle="bold" android:textColor="@color/black" />
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_next" app:tint="@color/text_secondary" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_ir_manutencoes_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_maintenance" app:tint="@color/azul_imepac" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="16dp" android:text="Histórico de Manutenções" android:textStyle="bold" android:textColor="@color/black" />
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_next" app:tint="@color/text_secondary" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_ir_relatorios_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_dashboard" app:tint="@color/azul_imepac" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="16dp" android:text="Relatórios e Analytics" android:textStyle="bold" android:textColor="@color/black" />
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_next" app:tint="@color/text_secondary" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View android:layout_width="match_parent" android:layout_height="32dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

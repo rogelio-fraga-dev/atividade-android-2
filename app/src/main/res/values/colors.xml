@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Primary Palette (Modern Dark & Deep Teal) -->
+    <color name="primary_dark">#121417</color>
+    <color name="primary_surface">#1A1C1E</color>
+    <color name="accent_teal">#00BFA5</color>
+    <color name="accent_teal_dark">#00897B</color>
+    <color name="accent_gold">#FFD600</color>
+
+    <!-- Legacy / Base -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="azul_imepac">#215D8E</color>
-    <color name="azul_imepac2">#6F62FC</color>
-    <color name="azul_imepac3">#6287FC</color>
+    <color name="azul_imepac">#1A1C1E</color> <!-- Replaced with Dark -->
+    <color name="azul_imepac2">#2C3E50</color>
+    <color name="azul_imepac3">#34495E</color>
+
+    <!-- Status dos Equipamentos (Refined) -->
+    <color name="status_funcionando">#4CAF50</color>   <!-- Emerald -->
+    <color name="status_atencao">#FFC107</color>         <!-- Amber -->
+    <color name="status_manutencao">#2196F3</color>      <!-- Blue -->
+    <color name="status_parado">#F44336</color>           <!-- Red -->
+
+    <!-- Status bg (Subtle) -->
+    <color name="status_funcionando_bg">#1A4CAF50</color>
+    <color name="status_atencao_bg">#1AFFC107</color>
+    <color name="status_manutencao_bg">#1A2196F3</color>
+    <color name="status_parado_bg">#1AF44336</color>
+
+    <!-- Surfaces & Text -->
+    <color name="background_page">#F8F9FA</color>
+    <color name="surface_white">#FFFFFF</color>
+    <color name="surface_gray">#ECEFF1</color>
+    <color name="text_primary">#263238</color>
+    <color name="text_secondary">#78909C</color>
+    <color name="divider">#CFD8DC</color>
+    <color name="danger">#D32F2F</color>
 </resources>

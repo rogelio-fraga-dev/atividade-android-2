@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Imepac</string>
+    <string name="app_name">ManutenControl</string>
+
+    <!-- Auth -->
     <string name="entrar">Entrar</string>
-    <string name="text_cadastro">Crie uma conta clicando aqui</string>
+    <string name="text_cadastro">Ainda não tem conta? Cadastre-se</string>
+    <string name="cadastrar">Criar Conta</string>
+    <string name="sair">Sair do Sistema</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_titulo">Painel Geral</string>
+    <string name="card_funcionando">Funcionando</string>
+    <string name="card_atencao">Atenção</string>
+    <string name="card_manutencao">Em Manutenção</string>
+    <string name="card_parado">Parado</string>
+    <string name="card_manutencoes_hoje">Manutenções Hoje</string>
+    <string name="card_pendentes">Pendentes</string>
+    <string name="ver_todos">Ver todos</string>
+
+    <!-- Equipamentos -->
+    <string name="equipamentos_titulo">Equipamentos</string>
+    <string name="novo_equipamento">Novo Equipamento</string>
+    <string name="editar_equipamento">Editar Equipamento</string>
+    <string name="detalhes_equipamento">Detalhes</string>
+    <string name="nome_equipamento">Nome do Equipamento</string>
+    <string name="codigo_equipamento">Código / Patrimônio</string>
+    <string name="setor">Setor / Localização</string>
+    <string name="data_compra">Data de Compra (dd/mm/aaaa)</string>
+    <string name="proxima_manutencao">Próxima Manutenção (dd/mm/aaaa)</string>
+    <string name="status">Status</string>
+    <string name="salvar">Salvar</string>
+    <string name="excluir">Excluir Equipamento</string>
+
+    <!-- Manutenções -->
+    <string name="manutencoes_titulo">Manutenções</string>
+    <string name="nova_manutencao">Nova Manutenção</string>
+    <string name="tipo_manutencao">Tipo de Manutenção</string>
+    <string name="descricao">Descrição do Serviço</string>
+    <string name="data_manutencao">Data (dd/mm/aaaa)</string>
+    <string name="custo">Custo (R$)</string>
+    <string name="responsavel">Técnico Responsável</string>
+
+    <!-- Filtros -->
+    <string name="filtros_titulo">Filtrar por Status</string>
+    <string name="todos">Todos</string>
+
+    <!-- Perfil -->
+    <string name="perfil_titulo">Meu Perfil</string>
+    <string name="cargo">Cargo / Função</string>
+    <string name="empresa">Empresa / Instituição</string>
+
+    <!-- Erros e Feedback -->
+    <string name="campos_vazios">Preencha todos os campos obrigatórios</string>
+    <string name="sucesso_salvo">Salvo com sucesso!</string>
+    <string name="sucesso_excluido">Equipamento excluído</string>
+    <string name="erro_generico">Ocorreu um erro. Tente novamente.</string>
+    <string name="lista_vazia">Nenhum item encontrado</string>
+    <string name="carregando">Carregando...</string>
 </resources>
